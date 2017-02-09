@@ -516,7 +516,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             if (isHeader(position) || isRefreshHeader(position) || isFooter(position)
-                    ||isEmptyView(position)) {
+                    ||isEmptyView(position) || isLoadMoreFooter(position)) {
                 return;
             }
             int adjPosition = position - (getHeadersCount() + 1);
@@ -532,7 +532,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads) {
             if (isHeader(position) || isRefreshHeader(position) || isFooter(position)
-                    ||isEmptyView(position)) {
+                    ||isEmptyView(position) || isLoadMoreFooter(position)) {
                 return;
             }
             int adjPosition = position - (getHeadersCount() + 1);
@@ -569,7 +569,9 @@ public class PullToRefreshRecyclerView extends RecyclerView {
                 gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                     @Override
                     public int getSpanSize(int position) {
-                        return (isHeader(position) || isLoadMoreFooter(position) || isRefreshHeader(position))
+                        return (isHeader(position) || isLoadMoreFooter(position)
+                                || isRefreshHeader(position) || isFooter(position)
+                                || isEmptyView(position))
                                 ? gridManager.getSpanCount() : 1;
                     }
                 });
