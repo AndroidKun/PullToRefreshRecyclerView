@@ -2,11 +2,12 @@ package com.androidkun.pulltorefreshrecyclerview.adapter;
 
 import android.content.Context;
 
-import com.androidkun.pulltorefreshlibrary.adapter.BaseAdapter;
-import com.androidkun.pulltorefreshlibrary.adapter.ViewHolder;
+import com.androidkun.adapter.BaseAdapter;
+import com.androidkun.adapter.ViewHolder;
 import com.androidkun.pulltorefreshrecyclerview.R;
 
 import java.util.List;
+
 
 /**
  * Created by Kun on 2016/12/14.

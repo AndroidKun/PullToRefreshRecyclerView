@@ -1,4 +1,4 @@
-package com.androidkun.pulltorefreshlibrary.adapter;
+package com.androidkun.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -61,7 +61,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
         convert(holder,datas.get(position));
     }
 
-    public abstract void convert(ViewHolder holder,T t);
+    public abstract void convert(ViewHolder holder, T t);
 
     @Override
     public int getItemCount() {

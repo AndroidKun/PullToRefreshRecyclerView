@@ -6,12 +6,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.androidkun.pulltorefreshlibrary.PullToRefreshRecyclerView;
-import com.androidkun.pulltorefreshlibrary.callback.PullToRefreshListener;
+import com.androidkun.PullToRefreshRecyclerView;
+import com.androidkun.callback.PullToRefreshListener;
 import com.androidkun.pulltorefreshrecyclerview.adapter.ModeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity implements PullToRefreshListener {
 

@@ -1,4 +1,4 @@
-package com.androidkun.pulltorefreshlibrary;
+package com.androidkun;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -13,10 +13,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.androidkun.pulltorefreshlibrary.callback.PullToRefreshListener;
+import com.androidkun.callback.PullToRefreshListener;
 
 import java.util.Date;
-
 /**
  * Created by Kun on 2017/2/7.
  * GitHub: https://github.com/AndroidKun

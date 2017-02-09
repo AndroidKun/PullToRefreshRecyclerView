@@ -1,4 +1,4 @@
-package com.androidkun.pulltorefreshlibrary;
+package com.androidkun;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.androidkun.pulltorefreshlibrary.callback.PullToRefreshListener;
+import com.androidkun.callback.PullToRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
      * 摩擦力
      */
     private static final int DRAG_RATE = 3;
-    private final RecyclerView.AdapterDataObserver dataObserver = new DataObserver();
+    private final AdapterDataObserver dataObserver = new DataObserver();
 
     private boolean pullRefreshEnabled = true;
     private boolean loadingMoreEnabled = true;
@@ -350,15 +350,15 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         refreshHeader.setRefreshing();
     }
 
-    private class PullToRefreshRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private class PullToRefreshRecyclerViewAdapter extends Adapter<ViewHolder> {
 
-        private RecyclerView.Adapter adapter;
+        private Adapter adapter;
 
-        public PullToRefreshRecyclerViewAdapter(RecyclerView.Adapter adapter) {
+        public PullToRefreshRecyclerViewAdapter(Adapter adapter) {
             this.adapter = adapter;
         }
 
-        public RecyclerView.Adapter getAdapter() {
+        public Adapter getAdapter() {
             return adapter;
         }
 
@@ -498,7 +498,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
 
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (viewType == TYPE_REFRESH_HEADER) {
                 return new SimpleViewHolder(refreshHeader);
             } else if (isHeaderType(viewType)) {
@@ -514,7 +514,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
             if (isHeader(position) || isRefreshHeader(position) || isFooter(position)
                     ||isEmptyView(position)) {
                 return;
@@ -530,7 +530,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads) {
+        public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads) {
             if (isHeader(position) || isRefreshHeader(position) || isFooter(position)
                     ||isEmptyView(position)) {
                 return;
@@ -563,7 +563,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         @Override
         public void onAttachedToRecyclerView(RecyclerView recyclerView) {
             super.onAttachedToRecyclerView(recyclerView);
-            RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+            LayoutManager manager = recyclerView.getLayoutManager();
             if (manager instanceof GridLayoutManager) {
                 final GridLayoutManager gridManager = ((GridLayoutManager) manager);
                 gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -583,7 +583,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         }
 
         @Override
-        public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        public void onViewAttachedToWindow(ViewHolder holder) {
             super.onViewAttachedToWindow(holder);
             ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
             if (lp != null
@@ -596,17 +596,17 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         }
 
         @Override
-        public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+        public void onViewDetachedFromWindow(ViewHolder holder) {
             adapter.onViewDetachedFromWindow(holder);
         }
 
         @Override
-        public void onViewRecycled(RecyclerView.ViewHolder holder) {
+        public void onViewRecycled(ViewHolder holder) {
             adapter.onViewRecycled(holder);
         }
 
         @Override
-        public boolean onFailedToRecycleView(RecyclerView.ViewHolder holder) {
+        public boolean onFailedToRecycleView(ViewHolder holder) {
             return adapter.onFailedToRecycleView(holder);
         }
 
@@ -620,7 +620,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
             adapter.registerAdapterDataObserver(observer);
         }
 
-        private class SimpleViewHolder extends RecyclerView.ViewHolder {
+        private class SimpleViewHolder extends ViewHolder {
             public SimpleViewHolder(View itemView) {
                 super(itemView);
             }
