@@ -67,7 +67,7 @@
     }
 ```
 
-## 框架中提供封装好的BaseAdapter，减少编写相同的代码，提高开发效率，Demo中的ModeAdapter就是继承了BaseAdapter，代码如下：
+### 框架中提供封装好的BaseAdapter，减少编写相同的代码，提高开发效率，Demo中的ModeAdapter就是继承了BaseAdapter，代码如下：
 
 ```
 public class ModeAdapter extends BaseAdapter {
