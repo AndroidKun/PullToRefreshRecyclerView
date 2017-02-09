@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">PullToRefreshLibrary</string>
+    <string name="release_refresh">释放立即刷新</string>
+    <string name="pull_to_refresh">下拉刷新</string>
+    <string name="refreshing">正在刷新</string>
+    <string name="refresh_success">刷新成功</string>
+    <string name="refresh_fail">刷新失败</string>
+</resources>
