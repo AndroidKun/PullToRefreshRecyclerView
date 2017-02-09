@@ -133,35 +133,38 @@ public class PullToRefreshRecyclerView extends RecyclerView {
     public void addHeaderView(View view) {
         headerTypes.add(TYPE_HEADER_VIEWS_INIT + headViews.size());
         headViews.add(view);
+        dataObserver.onChanged();
         if (pullToRefreshRecyclerViewAdapter != null) {
             pullToRefreshRecyclerViewAdapter.notifyDataSetChanged();
         }
     }
 
-    public void removeAllHeadViews() {
+/*    public void removeAllHeaderViews() {
         headViews.clear();
         headerTypes.clear();
+        dataObserver.onChanged();
         if (pullToRefreshRecyclerViewAdapter != null) {
             pullToRefreshRecyclerViewAdapter.notifyDataSetChanged();
         }
     }
 
-    public void removeHeadViewByIndex(int index) {
+    public void removeHeaderViewByIndex(int index) {
         if (index >= headViews.size()) {
-            throw new IndexOutOfBoundsException("Invalid index 1, HeadViews size is 1");
+            throw new IndexOutOfBoundsException("Invalid index "+index+", headerViews size is "+ headViews.size());
         }
         headViews.remove(index);
         headerTypes.remove(headerTypes.get(index));
+        dataObserver.onChanged();
         if (pullToRefreshRecyclerViewAdapter != null) {
             pullToRefreshRecyclerViewAdapter.notifyDataSetChanged();
         }
-    }
+    }*/
 
-    public List<View> getHeadViews() {
+    public List<View> getHeaderViews() {
         return headViews;
     }
 
-    public View getHeadViewByIndex(int index) {
+    public View getHeaderViewByIndex(int index) {
         if (index >= headViews.size()) return null;
         return headViews.get(index);
     }
@@ -169,6 +172,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
     public void addFooterView(View view) {
         footerTypes.add(TYPE_FOOTER_VIEW_INIT + footerViews.size());
         footerViews.add(view);
+        dataObserver.onChanged();
         if (pullToRefreshRecyclerViewAdapter != null) {
             pullToRefreshRecyclerViewAdapter.notifyDataSetChanged();
         }
@@ -182,6 +186,27 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         if (index >= footerViews.size()) return null;
         return footerViews.get(index);
     }
+
+  /*  public void removeAllFooterViews() {
+        if(footerViews.size()==0) return;
+        footerViews.clear();
+        footerTypes.clear();
+        if (pullToRefreshRecyclerViewAdapter != null) {
+            pullToRefreshRecyclerViewAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void removeFooterViewByIndex(int index) {
+        if (index >= footerViews.size()) {
+            throw new IndexOutOfBoundsException("Invalid index "+index+", footerView size is "+footerViews.size());
+        }
+        footerViews.remove(index);
+        footerTypes.remove(headerTypes.get(index));
+        dataObserver.onChanged();
+        if (pullToRefreshRecyclerViewAdapter != null) {
+            pullToRefreshRecyclerViewAdapter.notifyDataSetChanged();
+        }
+    }*/
 
     public void setRefreshComplete() {
         if (refreshHeader != null) {
@@ -224,6 +249,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
                                 || pullToRefreshRecyclerViewAdapter.isLoadMoreFooter(position)
                                 || pullToRefreshRecyclerViewAdapter.isRefreshHeader(position))
                                 || pullToRefreshRecyclerViewAdapter.isFooter(position)
+                                || pullToRefreshRecyclerViewAdapter.isEmptyView(position)
                                 ? gridManager.getSpanCount() : 1;
                     }
                 });
@@ -468,6 +494,8 @@ public class PullToRefreshRecyclerView extends RecyclerView {
             }
             return 0;
         }
+
+
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

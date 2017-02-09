@@ -1,12 +1,11 @@
 package com.androidkun.pulltorefreshlibrary;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -19,6 +18,8 @@ import android.widget.LinearLayout;
 
 public class LoadMoreView extends LinearLayout{
     private ImageView imageLoadMore;
+    private ValueAnimator animator;
+
     public LoadMoreView(Context context) {
         this(context,null);
     }
@@ -40,14 +41,27 @@ public class LoadMoreView extends LinearLayout{
     }
 
     public void startAnimation() {
-        RotateAnimation animation = new RotateAnimation(0f, 359f, Animation.RELATIVE_TO_SELF,
+        animator = ValueAnimator.ofFloat(imageLoadMore.getRotation()
+                ,imageLoadMore.getRotation()+359);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setDuration(1000);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                imageLoadMore.setRotation((Float) animation.getAnimatedValue());
+            }
+        });
+        animator.start();
+      /* RotateAnimation animation = new RotateAnimation(0f, 359f, Animation.RELATIVE_TO_SELF,
                 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         animation.setInterpolator(new LinearInterpolator());
         animation.setDuration(1000);
         animation.setRepeatCount(Animation.INFINITE);
-        imageLoadMore.startAnimation(animation);
+        imageLoadMore.startAnimation(animation);*/
     }
     public void stopAnimation() {
-        imageLoadMore.clearAnimation();
+        animator.end();
+//        imageLoadMore.clearAnimation();
     }
 }

@@ -8,9 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,6 +49,7 @@ public class RefreshHead extends LinearLayout {
      */
     private Date lastRefreshDate;
     private boolean showLastRefreshTime;
+    private ValueAnimator animator;
 
     public RefreshHead(Context context) {
         this(context, null);
@@ -73,6 +72,7 @@ public class RefreshHead extends LinearLayout {
         //一开始设置高度为0 不显示刷新布局
         addView(refreshContentView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
         setGravity(Gravity.BOTTOM);
+
 
     }
 
@@ -131,17 +131,33 @@ public class RefreshHead extends LinearLayout {
         imageArrow.setVisibility(GONE);
         textLastRefreshTime.setVisibility(GONE);
         imageRefreshing.setVisibility(VISIBLE);
-        RotateAnimation animation = new RotateAnimation(0f, 359f, Animation.RELATIVE_TO_SELF,
-                0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        animation.setInterpolator(new LinearInterpolator());
-        animation.setDuration(1000);
-        animation.setRepeatCount(Animation.INFINITE);
-        imageRefreshing.startAnimation(animation);
+        startRefreshingAnimation();
         textTip.setText(R.string.refreshing);
         smoothScrollTo(getScreenHeight() / 9);
         if (pullToRefreshListener != null) {
             pullToRefreshListener.onRefresh();
         }
+    }
+
+    public void startRefreshingAnimation() {
+        animator = ValueAnimator.ofFloat(imageRefreshing.getRotation(), imageRefreshing.getRotation()+359);
+        animator.setDuration(1000).start();
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                imageRefreshing.setRotation((Float) animation.getAnimatedValue());
+            }
+        });
+        animator.start();
+/*
+        RotateAnimation animation = new RotateAnimation(0f, 359f, Animation.RELATIVE_TO_SELF,
+                0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setInterpolator(new LinearInterpolator());
+        animation.setDuration(1000);
+        animation.setRepeatCount(Animation.INFINITE);
+        imageRefreshing.startAnimation(animation);*/
     }
 
     public void setState(int state) {
@@ -151,13 +167,7 @@ public class RefreshHead extends LinearLayout {
                 imageArrow.setVisibility(GONE);
                 textLastRefreshTime.setVisibility(GONE);
                 imageRefreshing.setVisibility(VISIBLE);
-                RotateAnimation animation = new RotateAnimation(0f, 359f, Animation.RELATIVE_TO_SELF,
-                        0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                animation.setInterpolator(new LinearInterpolator());
-                animation.setDuration(1000);
-                animation.setRepeatCount(Animation.INFINITE);
-                imageRefreshing.startAnimation(animation);
-
+                startRefreshingAnimation();
                 textTip.setText(R.string.refreshing);
                 smoothScrollTo(getScreenHeight() / 9);
 
@@ -170,7 +180,8 @@ public class RefreshHead extends LinearLayout {
                     imageRefreshing.setVisibility(GONE);
                     textTip.setText(R.string.refresh_success);
                     lastRefreshDate = new Date();
-                    imageRefreshing.clearAnimation();
+                    animator.end();
+//                    imageRefreshing.clearAnimation();
                     smoothScrollTo(0);
                 }
                 break;
@@ -179,7 +190,8 @@ public class RefreshHead extends LinearLayout {
                     imageRefreshing.setVisibility(GONE);
                     imageArrow.setVisibility(VISIBLE);
                     textTip.setText(R.string.refresh_fail);
-                    imageRefreshing.clearAnimation();
+                    animator.end();
+//                    imageRefreshing.clearAnimation();
                     smoothScrollTo(0);
                 }
                 break;
