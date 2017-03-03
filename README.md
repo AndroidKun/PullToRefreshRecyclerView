@@ -20,6 +20,10 @@
     pullToRefreshRV.setLayoutManager(layoutManager);
     adapter = new ModeAdapter(this, R.layout.item_mode,data);
     pullToRefreshRV.setAdapter(adapter);
+    //是否开启下拉刷新功能
+    pullToRefreshRV.setPullRefreshEnabled(true);
+    //是否开启上拉加载功能
+    pullToRefreshRV.setLoadingMoreEnabled(true);
     //设置是否显示上次刷新的时间
     pullToRefreshRV.displayLastRefreshTime(true);
     //设置刷新回调
