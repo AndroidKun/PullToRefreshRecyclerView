@@ -47,6 +47,10 @@ public class MainActivity extends AppCompatActivity implements PullToRefreshList
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ModeAdapter(this, data);
         recyclerView.setAdapter(adapter);
+        //设置是否开启上拉加载
+        recyclerView.setLoadingMoreEnabled(true);
+        //设置是否开启下拉刷新
+        recyclerView.setPullRefreshEnabled(true);
         //设置是否显示上次刷新的时间
         recyclerView.displayLastRefreshTime(true);
         //设置刷新回调

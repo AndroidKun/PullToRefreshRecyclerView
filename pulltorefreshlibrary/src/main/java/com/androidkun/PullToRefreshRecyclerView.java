@@ -78,6 +78,14 @@ public class PullToRefreshRecyclerView extends RecyclerView {
 //        loadMoreView = View.inflate(getContext(), R.layout.layout_load_more_view, null);
     }
 
+    public void setPullRefreshEnabled(boolean pullRefreshEnabled) {
+        this.pullRefreshEnabled = pullRefreshEnabled;
+    }
+
+    public void setLoadingMoreEnabled(boolean loadingMoreEnabled) {
+        this.loadingMoreEnabled = loadingMoreEnabled;
+    }
+
     public void setPullToRefreshListener(PullToRefreshListener pullToRefreshListener) {
         this.pullToRefreshListener = pullToRefreshListener;
         if (refreshHeader != null) {
