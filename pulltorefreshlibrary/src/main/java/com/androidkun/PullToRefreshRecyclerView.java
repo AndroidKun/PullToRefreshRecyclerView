@@ -143,16 +143,17 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         headViews.add(view);
         dataObserver.onChanged();
         if (pullToRefreshRecyclerViewAdapter != null) {
-            pullToRefreshRecyclerViewAdapter.notifyDataSetChanged();
+            pullToRefreshRecyclerViewAdapter.adapter.notifyDataSetChanged();
         }
     }
 
-/*    public void removeAllHeaderViews() {
+    public void removeAllHeaderViews() {
         headViews.clear();
         headerTypes.clear();
         dataObserver.onChanged();
-        if (pullToRefreshRecyclerViewAdapter != null) {
-            pullToRefreshRecyclerViewAdapter.notifyDataSetChanged();
+        if (pullToRefreshRecyclerViewAdapter != null
+                &&pullToRefreshRecyclerViewAdapter.adapter!=null) {
+            pullToRefreshRecyclerViewAdapter.adapter.notifyDataSetChanged();
         }
     }
 
@@ -163,10 +164,11 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         headViews.remove(index);
         headerTypes.remove(headerTypes.get(index));
         dataObserver.onChanged();
-        if (pullToRefreshRecyclerViewAdapter != null) {
-            pullToRefreshRecyclerViewAdapter.notifyDataSetChanged();
+        if (pullToRefreshRecyclerViewAdapter != null
+                &&pullToRefreshRecyclerViewAdapter.adapter!=null) {
+            pullToRefreshRecyclerViewAdapter.adapter.notifyDataSetChanged();
         }
-    }*/
+    }
 
     public List<View> getHeaderViews() {
         return headViews;
@@ -182,7 +184,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         footerViews.add(view);
         dataObserver.onChanged();
         if (pullToRefreshRecyclerViewAdapter != null) {
-            pullToRefreshRecyclerViewAdapter.notifyDataSetChanged();
+            pullToRefreshRecyclerViewAdapter.adapter.notifyDataSetChanged();
         }
     }
 
@@ -195,12 +197,14 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         return footerViews.get(index);
     }
 
-  /*  public void removeAllFooterViews() {
+    public void removeAllFooterViews() {
         if(footerViews.size()==0) return;
-        footerViews.clear();
         footerTypes.clear();
-        if (pullToRefreshRecyclerViewAdapter != null) {
-            pullToRefreshRecyclerViewAdapter.notifyDataSetChanged();
+        footerViews.clear();
+        dataObserver.onChanged();
+        if (pullToRefreshRecyclerViewAdapter != null
+                &&pullToRefreshRecyclerViewAdapter.adapter!=null) {
+            pullToRefreshRecyclerViewAdapter.adapter.notifyDataSetChanged();
         }
     }
 
@@ -211,10 +215,11 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         footerViews.remove(index);
         footerTypes.remove(headerTypes.get(index));
         dataObserver.onChanged();
-        if (pullToRefreshRecyclerViewAdapter != null) {
-            pullToRefreshRecyclerViewAdapter.notifyDataSetChanged();
+        if (pullToRefreshRecyclerViewAdapter != null
+                &&pullToRefreshRecyclerViewAdapter.adapter!=null) {
+            pullToRefreshRecyclerViewAdapter.adapter.notifyDataSetChanged();
         }
-    }*/
+    }
 
     public void setRefreshComplete() {
         if (refreshHeader != null) {
