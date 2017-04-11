@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * Created by Kun on 2017/2/8.
@@ -18,6 +19,7 @@ import android.widget.LinearLayout;
 
 public class LoadMoreView extends LinearLayout{
     private ImageView imageLoadMore;
+    private TextView textTip;
     private ValueAnimator animator;
 
     public LoadMoreView(Context context) {
@@ -33,6 +35,8 @@ public class LoadMoreView extends LinearLayout{
         View loadMoreContentView =  LayoutInflater.from(getContext()).inflate(
                 R.layout.layout_load_more_view, null);
         imageLoadMore = (ImageView) loadMoreContentView.findViewById(R.id.imageLoadMore);
+        textTip = (TextView) loadMoreContentView.findViewById(R.id.textTip);
+        textTip.setVisibility(GONE);
         addView(loadMoreContentView);
     }
 
@@ -63,5 +67,25 @@ public class LoadMoreView extends LinearLayout{
     public void stopAnimation() {
         animator.end();
 //        imageLoadMore.clearAnimation();
+    }
+
+    public void loadMoreComplete(PullToRefreshRecyclerView refreshRecyclerView){
+        setVisibility(GONE);
+        stopAnimation();
+        refreshRecyclerView.scrollBy(0,-getHeight());
+    }
+    public void loadMoreFail(final PullToRefreshRecyclerView refreshRecyclerView){
+        textTip.setVisibility(VISIBLE);
+        imageLoadMore.setVisibility(INVISIBLE);
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setVisibility(GONE);
+                stopAnimation();
+                refreshRecyclerView.scrollBy(0,-getHeight());
+                textTip.setVisibility(INVISIBLE);
+                imageLoadMore.setVisibility(VISIBLE);
+            }
+        },800);
     }
 }

@@ -342,10 +342,12 @@ public class PullToRefreshRecyclerView extends RecyclerView {
 
 
     public void setLoadMoreComplete() {
-        final int height = loadMoreView.getHeight();
-        loadMoreView.setVisibility(GONE);
-        loadMoreView.stopAnimation();
-        scrollBy(0,-height);
+        loadMoreView.loadMoreComplete(this);
+    }
+
+
+    public void setLoadMoreFail() {
+        loadMoreView.loadMoreFail(this);
     }
 
 

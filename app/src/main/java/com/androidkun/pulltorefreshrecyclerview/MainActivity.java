@@ -72,11 +72,17 @@ public class MainActivity extends AppCompatActivity implements PullToRefreshList
         }, 3000);
     }
 
+    int i = 0;
     @Override
     public void onLoadMore() {
         recyclerView.postDelayed(new Runnable() {
             @Override
             public void run() {
+                i++;
+                if(i>=4){
+                    recyclerView.setLoadMoreFail();
+                    return;
+                }
                 recyclerView.setLoadMoreComplete();
                 //模拟加载数据的情况
                 int size = data.size();
@@ -84,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements PullToRefreshList
                     data.add("" + i + i + i + i);
                 }
                 adapter.notifyDataSetChanged();
+
             }
         }, 3000);
     }
