@@ -233,6 +233,14 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         }
     }
 
+    /**
+     * 设置触发刷新的高度
+     * @param height
+     */
+    public void setRefreshLimitHeight(int height){
+        refreshHeader.setRefreshLimitHeight(height);
+    }
+
     @Override
     public void setAdapter(Adapter adapter) {
         pullToRefreshRecyclerViewAdapter = new PullToRefreshRecyclerViewAdapter(adapter);
