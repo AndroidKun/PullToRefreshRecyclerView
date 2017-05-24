@@ -77,6 +77,7 @@ public class RefreshHead extends LinearLayout {
 
     /**
      * 设置触发刷新的高度
+     * 
      * @param height
      */
     public void setRefreshLimitHeight(int height){
