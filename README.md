@@ -5,14 +5,14 @@
    
     compile 'com.androidkun:pulltorefreshrecyclerview:1.0.8'
    
-##2. 在布局文件中添加PullToRefreshRecyclerView控件
+## 2. 在布局文件中添加PullToRefreshRecyclerView控件
    
     <com.androidkun.PullToRefreshRecyclerView
         android:id="@+id/pullToRefreshRV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
      
-##3. 初始化PullToRefreshRecyclerView并设置属性和回调
+## 3. 初始化PullToRefreshRecyclerView并设置属性和回调
 
     pullToRefreshRV = (PullToRefreshRecyclerView) findViewById(R.id.pullToRefreshRV);
     LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -31,7 +31,7 @@
     //主动触发下拉刷新操作
     //pullToRefreshRV.onRefresh();
      
-### <font color=#f00>如果想使用网格列表，则相应设置布局管理者为网格布局管理者就行了</font>
+###  <font color=#f00>如果想使用网格列表，则相应设置布局管理者为网格布局管理者就行了</font>
      
     GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
     recyclerView.setLayoutManager(gridLayoutManager);
