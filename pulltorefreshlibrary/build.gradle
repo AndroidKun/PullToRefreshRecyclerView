@@ -36,7 +36,7 @@ publish {
     userOrg = 'androidkun'
     groupId = 'com.androidkun'
     artifactId = 'pulltorefreshrecyclerview'
-    publishVersion = '1.0.8'
+    publishVersion = '1.0.9'
     desc = 'An Pull To Refresh RecyclerView for Android, support pull down and pull up to refresh!'
     website = 'https://github.com/AndroidKun/PullToRefreshRecyclerView'
 }

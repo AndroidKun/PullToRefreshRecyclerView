@@ -3,6 +3,7 @@ package com.androidkun;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -168,9 +169,12 @@ public class RefreshHead extends LinearLayout {
     }
 
     public void setState(int state) {
-        if (getVisibleHeight() <= 0 || refreshState == state) return;
+        Log.w("AAA","1111");
+        if (refreshState == state) return;
+        Log.w("AAA","2222");
         switch (state) {
             case STATE_REFRESHING://切换到刷新状态
+                refreshState = state;
                 imageArrow.setVisibility(GONE);
                 textLastRefreshTime.setVisibility(GONE);
                 imageRefreshing.setVisibility(VISIBLE);
@@ -184,16 +188,18 @@ public class RefreshHead extends LinearLayout {
                 break;
             case STATE_DONE://切换到刷新完成或者加载成功的状态
                 if (refreshState == STATE_REFRESHING) {
+                    refreshState = state;
+                    animator.end();
                     imageRefreshing.setVisibility(GONE);
                     textTip.setText(R.string.refresh_success);
                     lastRefreshDate = new Date();
-                    animator.end();
 //                    imageRefreshing.clearAnimation();
                     smoothScrollTo(0);
                 }
                 break;
             case STATE_FAIL://切换到刷新失败或者加载失败的状态
                 if (refreshState == STATE_REFRESHING) {
+                    refreshState = state;
                     imageRefreshing.setVisibility(GONE);
                     imageArrow.setVisibility(VISIBLE);
                     textTip.setText(R.string.refresh_fail);
@@ -203,7 +209,6 @@ public class RefreshHead extends LinearLayout {
                 }
                 break;
         }
-        refreshState = state;
     }
 
     public int getRefreshState() {
