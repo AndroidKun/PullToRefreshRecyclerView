@@ -3,7 +3,7 @@
 
 ## 1. 在Module下的build.gradle中添加依赖
    
-    compile 'com.androidkun:pulltorefreshrecyclerview:1.0.8'
+    compile 'com.androidkun:pulltorefreshrecyclerview:1.0.9'
    
 ## 2. 在布局文件中添加PullToRefreshRecyclerView控件
    
