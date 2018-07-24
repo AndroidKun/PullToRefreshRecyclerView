@@ -119,6 +119,7 @@ public class RefreshHead extends LinearLayout {
             rotationAnimator(0);
         }
         setVisibleHeight(getVisibleHeight() + move);
+
     }
 
     /**
@@ -169,9 +170,7 @@ public class RefreshHead extends LinearLayout {
     }
 
     public void setState(int state) {
-        Log.w("AAA","1111");
         if (refreshState == state) return;
-        Log.w("AAA","2222");
         switch (state) {
             case STATE_REFRESHING://切换到刷新状态
                 refreshState = state;

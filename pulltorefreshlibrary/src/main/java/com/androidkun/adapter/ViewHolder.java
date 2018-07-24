@@ -2,6 +2,7 @@ package com.androidkun.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spanned;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +49,11 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         tv.setText(text);
         return this;
     }
+    public ViewHolder setText(int viewId, Spanned text) {
+        TextView tv = getView(viewId);
+        tv.setText(text);
+        return this;
+    }
 
     public String getText(int viewId) {
         TextView tv = getView(viewId);
@@ -82,4 +88,5 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         view.setOnClickListener(listener);
         return this;
     }
+
 }

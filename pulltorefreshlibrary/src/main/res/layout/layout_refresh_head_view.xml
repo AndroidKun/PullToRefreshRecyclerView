@@ -15,13 +15,13 @@
 
         <ImageView
             android:id="@+id/imageArrow"
-            android:layout_width="35dp"
+            android:layout_width="30dp"
             android:layout_height="35dp"
             android:src="@drawable/ic_arrow"/>
         <ImageView
             android:id="@+id/imageRefreshing"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:src="@drawable/ic_refreshing"
             android:visibility="gone"/>
 

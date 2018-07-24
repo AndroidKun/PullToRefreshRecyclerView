@@ -45,6 +45,9 @@ public class LoadMoreView extends LinearLayout{
     }
 
     public void startAnimation() {
+        if(animator!=null && animator.isStarted()){
+            return;
+        }
         animator = ValueAnimator.ofFloat(imageLoadMore.getRotation()
                 ,imageLoadMore.getRotation()+359);
         animator.setInterpolator(new LinearInterpolator());
@@ -65,15 +68,28 @@ public class LoadMoreView extends LinearLayout{
         imageLoadMore.startAnimation(animation);*/
     }
     public void stopAnimation() {
-        animator.end();
-//        imageLoadMore.clearAnimation();
+        if(animator!=null) {
+            animator.removeAllUpdateListeners();
+            animator.cancel();
+            animator.end();
+            animator = null;
+        }
+        imageLoadMore.clearAnimation();
     }
 
-    public void loadMoreComplete(PullToRefreshRecyclerView refreshRecyclerView){
+    public void loadMoreComplete(PullToRefreshRecyclerView refreshRecyclerView,boolean isAwaysShow){
+        if(!isAwaysShow) {
+            setVisibility(GONE);
+            stopAnimation();
+        }
+        refreshRecyclerView.scrollBy(0,-getHeight());
+    }
+    public void loadMoreEnd(PullToRefreshRecyclerView refreshRecyclerView){
         setVisibility(GONE);
         stopAnimation();
         refreshRecyclerView.scrollBy(0,-getHeight());
     }
+
     public void loadMoreFail(final PullToRefreshRecyclerView refreshRecyclerView){
         textTip.setVisibility(VISIBLE);
         imageLoadMore.setVisibility(INVISIBLE);

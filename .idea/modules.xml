@@ -3,8 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/PullToRefreshRecyclerView.iml" filepath="$PROJECT_DIR$/PullToRefreshRecyclerView.iml" />
+      <module fileurl="file://D:\github\PullToRefreshRecyclerView\PullToRefreshRecyclerView.iml" filepath="D:\github\PullToRefreshRecyclerView\PullToRefreshRecyclerView.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\github\PullToRefreshRecyclerView\app\app.iml" filepath="D:\github\PullToRefreshRecyclerView\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/pulltorefreshlibrary/pulltorefreshlibrary.iml" filepath="$PROJECT_DIR$/pulltorefreshlibrary/pulltorefreshlibrary.iml" />
+      <module fileurl="file://D:\github\PullToRefreshRecyclerView\pulltorefreshlibrary\pulltorefreshlibrary.iml" filepath="D:\github\PullToRefreshRecyclerView\pulltorefreshlibrary\pulltorefreshlibrary.iml" />
     </modules>
   </component>
 </project>

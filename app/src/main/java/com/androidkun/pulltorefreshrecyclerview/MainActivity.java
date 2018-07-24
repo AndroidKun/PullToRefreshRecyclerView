@@ -94,4 +94,13 @@ public class MainActivity extends AppCompatActivity implements PullToRefreshList
             }
         }, 3000);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //解决部分机型内存泄漏问题
+        recyclerView.setRefreshComplete();
+        recyclerView.setLoadMoreComplete();
+        recyclerView.loadMoreEnd();
+    }
 }

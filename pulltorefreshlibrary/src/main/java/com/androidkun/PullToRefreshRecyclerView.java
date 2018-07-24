@@ -71,11 +71,29 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         init();
     }
 
+    private boolean isAlwaysShow = false;
+
+    //设置加载更多界面在所有数据未加载完成前是否一直显示
+    public void setLoadMoreViewAlwaysShow(boolean alwaysShow) {
+        this.isAlwaysShow = alwaysShow;
+    }
+
     private void init() {
         refreshHeader = new RefreshHead(getContext());
         loadMoreView = new LoadMoreView(getContext());
+//        if(isAlwaysShow){
+//            loadMoreView.setVisibility(VISIBLE);
+//        }else{
         loadMoreView.setVisibility(GONE);
+//        }
 //        loadMoreView = View.inflate(getContext(), R.layout.layout_load_more_view, null);
+    }
+
+    public void showLoadMoreView() {
+        if (isAlwaysShow) {
+            loadMoreView.setVisibility(VISIBLE);
+            loadMoreView.startAnimation();
+        }
     }
 
     public void setPullRefreshEnabled(boolean pullRefreshEnabled) {
@@ -95,28 +113,35 @@ public class PullToRefreshRecyclerView extends RecyclerView {
 
     /**
      * 设置箭头资源图标
+     *
      * @param resId
      */
-    public void setRefreshArrowResource(int resId){
+    public void setRefreshArrowResource(int resId) {
         refreshHeader.setRefreshArrowResource(resId);
     }
+
     /**
      * 设置刷新资源图标
+     *
      * @param resId
      */
-    public void setRefreshingResource(int resId){
+    public void setRefreshingResource(int resId) {
         refreshHeader.setRefreshingResource(resId);
-    }/**
+    }
+
+    /**
      * 设置加载更多资源图标
+     *
      * @param resId
      */
-    public void setLoadMoreResource(int resId){
+    public void setLoadMoreResource(int resId) {
         loadMoreView.setLoadMoreResource(resId);
     }
+
     /**
      * 设置是否显示上次刷新时间
      */
-    public void displayLastRefreshTime(boolean display){
+    public void displayLastRefreshTime(boolean display) {
         refreshHeader.displayLastRefreshTime(display);
     }
 
@@ -152,20 +177,20 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         headerTypes.clear();
         dataObserver.onChanged();
         if (pullToRefreshRecyclerViewAdapter != null
-                &&pullToRefreshRecyclerViewAdapter.adapter!=null) {
+                && pullToRefreshRecyclerViewAdapter.adapter != null) {
             pullToRefreshRecyclerViewAdapter.adapter.notifyDataSetChanged();
         }
     }
 
     public void removeHeaderViewByIndex(int index) {
         if (index >= headViews.size()) {
-            throw new IndexOutOfBoundsException("Invalid index "+index+", headerViews size is "+ headViews.size());
+            throw new IndexOutOfBoundsException("Invalid index " + index + ", headerViews size is " + headViews.size());
         }
         headViews.remove(index);
         headerTypes.remove(headerTypes.get(index));
         dataObserver.onChanged();
         if (pullToRefreshRecyclerViewAdapter != null
-                &&pullToRefreshRecyclerViewAdapter.adapter!=null) {
+                && pullToRefreshRecyclerViewAdapter.adapter != null) {
             pullToRefreshRecyclerViewAdapter.adapter.notifyDataSetChanged();
         }
     }
@@ -198,25 +223,25 @@ public class PullToRefreshRecyclerView extends RecyclerView {
     }
 
     public void removeAllFooterViews() {
-        if(footerViews.size()==0) return;
+        if (footerViews.size() == 0) return;
         footerTypes.clear();
         footerViews.clear();
         dataObserver.onChanged();
         if (pullToRefreshRecyclerViewAdapter != null
-                &&pullToRefreshRecyclerViewAdapter.adapter!=null) {
+                && pullToRefreshRecyclerViewAdapter.adapter != null) {
             pullToRefreshRecyclerViewAdapter.adapter.notifyDataSetChanged();
         }
     }
 
     public void removeFooterViewByIndex(int index) {
         if (index >= footerViews.size()) {
-            throw new IndexOutOfBoundsException("Invalid index "+index+", footerView size is "+footerViews.size());
+            throw new IndexOutOfBoundsException("Invalid index " + index + ", footerView size is " + footerViews.size());
         }
         footerViews.remove(index);
         footerTypes.remove(headerTypes.get(index));
         dataObserver.onChanged();
         if (pullToRefreshRecyclerViewAdapter != null
-                &&pullToRefreshRecyclerViewAdapter.adapter!=null) {
+                && pullToRefreshRecyclerViewAdapter.adapter != null) {
             pullToRefreshRecyclerViewAdapter.adapter.notifyDataSetChanged();
         }
     }
@@ -238,7 +263,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
      *
      * @param height
      */
-    public void setRefreshLimitHeight(int height){
+    public void setRefreshLimitHeight(int height) {
         refreshHeader.setRefreshLimitHeight(height);
     }
 
@@ -289,6 +314,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
                 lastY = e.getRawY();
                 break;
             case MotionEvent.ACTION_MOVE:
+                if (lastY < 0) lastY = e.getRawY();
                 float moveY = e.getRawY() - lastY;
                 lastY = e.getRawY();
                 if (refreshHeader.getVisibleHeight() == 0 && moveY < 0) {
@@ -296,6 +322,10 @@ public class PullToRefreshRecyclerView extends RecyclerView {
                 }
                 if (isOnTop() && pullRefreshEnabled && refreshHeader.getRefreshState() != RefreshHead.STATE_REFRESHING) {
                     refreshHeader.onMove((int) (moveY / DRAG_RATE));
+
+                    LinearLayoutManager mLayoutManager =
+                            (LinearLayoutManager) getLayoutManager();
+                    mLayoutManager.scrollToPositionWithOffset(0, 0);
                     return false;
                 }
                 break;
@@ -317,6 +347,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         } else {
             return false;
         }
+
     }
 
     int lastVisibleItemPosition;
@@ -325,7 +356,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
     public void onScrollStateChanged(int state) {
         super.onScrollStateChanged(state);
         if (state == RecyclerView.SCROLL_STATE_IDLE && pullToRefreshListener != null
-                && loadingMoreEnabled && loadMoreView.getVisibility() != View.VISIBLE) {
+                && loadingMoreEnabled && (isAlwaysShow ? isAlwaysShow : loadMoreView.getVisibility() != View.VISIBLE)) {
             LayoutManager layoutManager = getLayoutManager();
             if (layoutManager instanceof GridLayoutManager) {
                 lastVisibleItemPosition = ((GridLayoutManager) layoutManager)
@@ -340,18 +371,18 @@ public class PullToRefreshRecyclerView extends RecyclerView {
             }
             if (layoutManager.getChildCount() > 0 &&
                     lastVisibleItemPosition >= pullToRefreshRecyclerViewAdapter.getItemCount() - 1
-//                    && layoutManager.getItemCount() > layoutManager.getChildCount()
+                    && pullToRefreshListener != null
                     && refreshHeader.getRefreshState() != RefreshHead.STATE_REFRESHING) {
                 loadMoreView.setVisibility(VISIBLE);
                 loadMoreView.startAnimation();
                 pullToRefreshListener.onLoadMore();
             }
-       }
+        }
     }
 
 
     public void setLoadMoreComplete() {
-        loadMoreView.loadMoreComplete(this);
+        loadMoreView.loadMoreComplete(this, isAlwaysShow);
     }
 
 
@@ -374,6 +405,18 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         refreshHeader.setRefreshing();
     }
 
+    public void onLoadMoare() {
+        loadMoreView.setVisibility(VISIBLE);
+        loadMoreView.startAnimation();
+        pullToRefreshListener.onLoadMore();
+    }
+
+    public void loadMoreEnd() {
+        if (loadMoreView != null) {
+            loadMoreView.loadMoreEnd(this);
+        }
+    }
+
     private class PullToRefreshRecyclerViewAdapter extends Adapter<ViewHolder> {
 
         private Adapter adapter;
@@ -392,8 +435,8 @@ public class PullToRefreshRecyclerView extends RecyclerView {
 
         public boolean isFooter(int position) {
             int count = 0;
-            if(shouldDisplayEmptyView()) count = 1;
-            return position >= 1 && !isLoadMoreFooter(position) && position >= 1+headViews.size()+adapter.getItemCount()+count;
+            if (shouldDisplayEmptyView()) count = 1;
+            return position >= 1 && !isLoadMoreFooter(position) && position >= 1 + headViews.size() + adapter.getItemCount() + count;
         }
 
         public boolean isLoadMoreFooter(int position) {
@@ -412,7 +455,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
             return headViews.size();
         }
 
-        public int getFootersCount(){
+        public int getFootersCount() {
             return footerViews.size();
         }
 
@@ -443,6 +486,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
             }
             return footerViews.get(itemType - TYPE_FOOTER_VIEW_INIT);
         }
+
         /**
          * 判断ItemType是否为FooterType
          */
@@ -450,43 +494,49 @@ public class PullToRefreshRecyclerView extends RecyclerView {
             return footerTypes.size() > 0 && footerTypes.contains(itemViewType);
         }
 
-        private boolean isEmptyView(int position){
-            return shouldDisplayEmptyView() && position==1+headViews.size();
+        private boolean isEmptyView(int position) {
+            return shouldDisplayEmptyView() && position == 1 + headViews.size();
         }
+
         /**
          * 是否需要显示EmptyView
+         *
          * @return
          */
-        private boolean shouldDisplayEmptyView(){
-            return adapter.getItemCount()==0 && emptyView!=null;
+        private boolean shouldDisplayEmptyView() {
+            return adapter.getItemCount() == 0 && emptyView != null;
         }
+
         @Override
         public int getItemCount() {
             int count;
             if (loadingMoreEnabled) {
                 if (adapter != null) {
-                    count = getHeadersCount() + getFootersCount()+adapter.getItemCount() + 2;
+                    count = getHeadersCount() + getFootersCount() + adapter.getItemCount() + 2;
                 } else {
-                    count = getHeadersCount()+ getFootersCount() + 2;
+                    count = getHeadersCount() + getFootersCount() + 2;
                 }
             } else {
                 if (adapter != null) {
-                    count = getHeadersCount()+ getFootersCount() + adapter.getItemCount() + 1;
+                    count = getHeadersCount() + getFootersCount() + adapter.getItemCount() + 1;
                 } else {
-                    count = getHeadersCount()+ getFootersCount() + 1;
+                    count = getHeadersCount() + getFootersCount() + 1;
                 }
             }
             //如果Adapter中没有数据 则多加1用于显示EmptyView
-            if(shouldDisplayEmptyView()){
-                count+=1;
+            if (shouldDisplayEmptyView()) {
+                count += 1;
             }
             return count;
         }
 
         @Override
         public int getItemViewType(int position) {
-            int adjPosition = position - (getHeadersCount() +getFootersCount()+ 1);
-            if(shouldDisplayEmptyView()) adjPosition--;
+//            int adjPosition = position - (getHeadersCount() + getFootersCount() + 1);
+            int adjPosition = position-1;
+            if (shouldDisplayEmptyView()) {
+                adjPosition--;
+            }
             if (isRefreshHeader(position)) {
                 return TYPE_REFRESH_HEADER;
             }
@@ -494,31 +544,35 @@ public class PullToRefreshRecyclerView extends RecyclerView {
                 position = position - 1;
                 return headerTypes.get(position);
             }
-            if(shouldDisplayEmptyView()&& position==getHeadersCount()+1){
+            if (shouldDisplayEmptyView() && position == getHeadersCount() + 1) {
                 return TYPE_EMPTY_VIEW;
             }
-            if(isFooter(position)){
-                position = position-1-headViews.size()-adapter.getItemCount();
-                if(shouldDisplayEmptyView()) position--;
+            if (isFooter(position)) {
+                position = position - 1 - headViews.size() - adapter.getItemCount();
+                if (shouldDisplayEmptyView()) position--;
                 return footerTypes.get(position);
             }
             if (isLoadMoreFooter(position)) {
                 return TYPE_LOAD_MORE_FOOTER;
             }
-            int adapterCount;
+
+            return adapter.getItemViewType(adjPosition);
+           /* int adapterCount;
             if (adapter != null) {
                 adapterCount = adapter.getItemCount();
+//                adapterCount = getItemCount();
+                Log.w("AAA", "adjPosition:" + adjPosition + ";adapterCount:" + adapterCount);
                 if (adjPosition < adapterCount) {
                     int type = adapter.getItemViewType(adjPosition);
+                    Log.w("AAA", "type:" + type);
                     if (isReservedItemViewType(type)) {
                         throw new IllegalStateException("PullToRefreshRecyclerView require itemViewType in adapter should be less than 10000 ");
                     }
                     return type;
                 }
             }
-            return 0;
+            return 0;*/
         }
-
 
 
         @Override
@@ -527,9 +581,9 @@ public class PullToRefreshRecyclerView extends RecyclerView {
                 return new SimpleViewHolder(refreshHeader);
             } else if (isHeaderType(viewType)) {
                 return new SimpleViewHolder(getHeaderViewByType(viewType));
-            } else if (viewType == TYPE_EMPTY_VIEW ){
+            } else if (viewType == TYPE_EMPTY_VIEW) {
                 return new SimpleViewHolder(emptyView);
-            } else if(isFooterType(viewType)){
+            } else if (isFooterType(viewType)) {
                 return new SimpleViewHolder(getFooterViewByType(viewType));
             } else if (viewType == TYPE_LOAD_MORE_FOOTER) {
                 return new SimpleViewHolder(loadMoreView);
@@ -540,7 +594,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             if (isHeader(position) || isRefreshHeader(position) || isFooter(position)
-                    ||isEmptyView(position) || isLoadMoreFooter(position)) {
+                    || isEmptyView(position) || isLoadMoreFooter(position)) {
                 return;
             }
             int adjPosition = position - (getHeadersCount() + 1);
@@ -556,7 +610,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads) {
             if (isHeader(position) || isRefreshHeader(position) || isFooter(position)
-                    ||isEmptyView(position) || isLoadMoreFooter(position)) {
+                    || isEmptyView(position) || isLoadMoreFooter(position)) {
                 return;
             }
             int adjPosition = position - (getHeadersCount() + 1);
